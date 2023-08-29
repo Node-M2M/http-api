@@ -22,8 +22,9 @@ const { Device } = require('m2m');
 
 let device = new Device(100);
 
-device.connect(() => {
+device.connect(app);
 
+function app(){
   device.get('/update-data', (req, res) => {
     console.log('req.query', req.query);
     res.json(req.query);
@@ -39,8 +40,7 @@ device.connect(() => {
     console.log('req.body', req.body);
     res.send('device 100 data updated');
   });
-
-});
+}
 ```
 #### 3. Start your device1 application.
 ```js
@@ -61,8 +61,9 @@ const { Device } = require('m2m');
 
 let device = new Device(200);
 
-device.connect(() => {
+device.connect(app);
 
+function app(){
   device.get('/device/state', (req, res) => {
     res.json({id:100, state:'off'});
   });
@@ -77,8 +78,7 @@ device.connect(() => {
     console.log('req.body', req.body);
     res.json({params:req.params, body:req.body});
   });
-
-});
+}
 ```
 #### 3. Start your device2 application.
 ```js
@@ -101,8 +101,9 @@ const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-client.connect(() => {
+client.connect(app);
 
+function app(){
   client.get({id:100, path:'/update-data?name=ed&status=member'}, (data) => {
     console.log('device 100 get /update-data result', data); 
   });
@@ -118,8 +119,7 @@ client.connect(() => {
   client.post({id:200, path:'/machine-control/m120/actuator/25/action/on', body:{id:200, state:'true'}}, (data) => {
     console.log('device 200 /machine-control result', data);
   });
-
-});
+}
 ```
 
 #### 3. Start your client application.
